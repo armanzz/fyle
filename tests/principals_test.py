@@ -30,7 +30,36 @@ def test_grade_assignment_draft_assignment(client, h_principal):
     
     assert response.status_code == 400
 
+def test_grade_assignment(client, h_principal):
+    response = client.post(
+        '/principal/assignments/grade',
+        json={
+            'id': 4,
+            'grade': "C"
+        },
+        headers=h_principal
+    )
+    print(response.json)
+    print(GradeEnum.C.value)
+    assert response.status_code == 400
+    
 
+    
+
+
+def test_regrade_assignment(client, h_principal):
+    response = client.post(
+        '/principal/assignments/grade',
+        json={
+            'id': 4,
+            'grade': GradeEnum.B.value
+        },
+        headers=h_principal
+    )
+
+    assert response.status_code == 400
+
+    
 
 
 
@@ -53,5 +82,3 @@ def test_grade_assignment_unauthorized(client):
     data = response.json
     assert data['error'] == 'FyleError'
     assert data['message'] == 'principal not found'
-
-
