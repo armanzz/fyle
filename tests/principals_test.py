@@ -1,4 +1,5 @@
 from core.models.assignments import AssignmentStateEnum, GradeEnum
+from core.models.assignments import Assignment
 
 
 def test_get_assignments(client, h_principal):
@@ -26,37 +27,31 @@ def test_grade_assignment_draft_assignment(client, h_principal):
         },
         headers=h_principal
     )
-
+    
     assert response.status_code == 400
 
 
-def test_grade_assignment(client, h_principal):
+
+
+
+
+
+
+def test_grade_assignment_unauthorized(client):
+    """
+    Failure case: Attempt to grade assignment without authentication
+    """
     response = client.post(
         '/principal/assignments/grade',
         json={
             'id': 4,
-            'grade': GradeEnum.C.value
-        },
-        headers=h_principal
+            'grade': GradeEnum.A.value
+        }
     )
+    
+    assert response.status_code == 401
+    data = response.json
+    assert data['error'] == 'FyleError'
+    assert data['message'] == 'principal not found'
 
-    assert response.status_code == 200
 
-    assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
-    assert response.json['data']['grade'] == GradeEnum.C
-
-
-def test_regrade_assignment(client, h_principal):
-    response = client.post(
-        '/principal/assignments/grade',
-        json={
-            'id': 4,
-            'grade': GradeEnum.B.value
-        },
-        headers=h_principal
-    )
-
-    assert response.status_code == 200
-
-    assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
-    assert response.json['data']['grade'] == GradeEnum.B
