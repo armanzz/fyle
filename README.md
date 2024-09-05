@@ -22,6 +22,7 @@ flask db upgrade -d core/migrations/
 ### Start Server
 
 ```
+$env:FLASK_APP="core/server.py"
 flask run
 ```
 ### Run Tests
