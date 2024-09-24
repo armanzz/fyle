@@ -35,3 +35,8 @@ pytest -vvv -s tests/
 # pytest --cov
 # open htmlcov/index.html
 ```
+
+### Coverage Report:
+
+
+![Screenshot (52)](https://github.com/user-attachments/assets/600ad519-f8b6-447b-b981-50c078653cd8)
