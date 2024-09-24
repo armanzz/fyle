@@ -83,6 +83,53 @@ def test_regrade_assignment(client, h_principal):
     
 
 
+def test_regrade_assignment(client, h_principal):
+    response = client.post(
+        '/principal/assignments/grade',
+        json={
+            'id': 4,
+            'grade': GradeEnum.B.value
+        },
+        headers=h_principal
+    )
+
+    assert response.status_code == 400
+
+    
+
+def test_grade_assignment(client, h_principal):
+    response = client.post(
+        '/principal/assignments/grade',
+        json={
+            'id': 5,
+            'grade': GradeEnum.C.name
+        },
+        headers=h_principal
+    )
+    print(response.json)
+    assert response.status_code == 200
+    data = response.json
+   
+    
+
+    
+
+
+def test_regrade_assignment(client, h_principal):
+    response = client.post(
+        '/principal/assignments/grade',
+        json={
+            'id': 5,
+            'grade': GradeEnum.B.value
+        },
+        headers=h_principal
+    )
+
+    assert response.status_code == 200
+
+    
+
+
 
 
 
