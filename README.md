@@ -8,8 +8,7 @@
 ### Install requirements
 
 ```
-python -m venv venv
-./venv/scripts/activate
+
 python -m venv venv
 ./venv/scripts/activate
 pip install -r requirements.txt
@@ -17,8 +16,7 @@ pip install -r requirements.txt
 ### Reset DB
 
 ```
-$env:FLASK_APP="core/server.py"
-Remove-Item -Path "instance/store.sqlite3"
+
 $env:FLASK_APP="core/server.py"
 Remove-Item -Path "instance/store.sqlite3"
 flask db upgrade -d core/migrations/
