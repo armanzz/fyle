@@ -42,6 +42,9 @@ def grade_assignment(principal, incoming_payload):
     
     assert_found(assignment, 'No assignment with this id was found')
 
+    if assignment.state == AssignmentStateEnum.DRAFT:
+        return APIResponse.respond_with_error('Cannot grade assignment in current state', status_code=400)
+    
     
     assignment.grade = grade_assignment_payload.grade
     assignment.state = AssignmentStateEnum.GRADED

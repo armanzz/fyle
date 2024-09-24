@@ -43,10 +43,12 @@ class AssignmentGradeSchema(Schema):
         unknown = EXCLUDE
 
     id = fields.Integer(required=True, allow_none=False)
-    grade = EnumField(GradeEnum, required=True,  allow_none=False)
+    grade = EnumField(GradeEnum,required=True,  allow_none=False)
     
 
     @post_load
     def initiate_class(self, data_dict, many, partial):
         # pylint: disable=unused-argument,no-self-use
         return GeneralObject(**data_dict)
+
+ 

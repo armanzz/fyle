@@ -86,3 +86,15 @@ def test_assignment_resubmit_error(client, h_student_1):
     assert response.status_code == 400
     assert error_response['error'] == 'FyleError'
     assert error_response["message"] == 'only a draft assignment can be submitted'
+
+
+def test_get_assignments_by_student():
+    """
+    Test the get_assignments_by_student class method.
+    """
+    from core.models.assignments import Assignment
+
+    assignments = Assignment.get_assignments_by_student(student_id=1)
+    assert isinstance(assignments, list)
+    for assignment in assignments:
+        assert assignment.student_id == 1

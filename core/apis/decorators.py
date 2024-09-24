@@ -16,7 +16,7 @@ def accept_payload(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         incoming_payload = request.json
-        return func(incoming_payload, *args, **kwargs)
+        return func(*args, **kwargs, incoming_payload=incoming_payload)
     return wrapper
 
 

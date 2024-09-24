@@ -101,3 +101,45 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
     data = response.json
 
     assert data['error'] == 'FyleError'
+
+
+def test_get_assignments_by_teacher():
+    """
+    Test the get_assignments_by_teacher class method.
+    """
+    from core.models.assignments import Assignment
+
+    assignments = Assignment.get_assignments_by_teacher(teacher_id=1)
+    assert isinstance(assignments, list)
+    for assignment in assignments:
+        assert assignment.teacher_id == 1
+
+
+def test_mark_grade():
+    """
+    Test the mark_grade method of the Assignment model.
+    """
+    from core.models.assignments import Assignment, AssignmentStateEnum, GradeEnum
+    from core.apis.decorators import AuthPrincipal
+    from core import db
+
+    # Create a submitted assignment
+    assignment = Assignment(
+        content='Test Content',
+        student_id=1,
+        teacher_id=1,
+        state=AssignmentStateEnum.SUBMITTED
+    )
+    db.session.add(assignment)
+    db.session.commit()
+
+    auth_principal = AuthPrincipal(user_id=1, teacher_id=1)
+
+    # Grade the assignment
+    graded_assignment = Assignment.mark_grade(assignment.id, GradeEnum.A, auth_principal)
+
+    # Refresh the assignment from the database
+    db.session.refresh(assignment)
+
+    assert assignment.grade == GradeEnum.A
+    assert assignment.state == AssignmentStateEnum.GRADED
